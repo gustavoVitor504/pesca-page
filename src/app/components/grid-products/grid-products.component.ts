@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { CurrencyPipe, NgIf, NgFor } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { ViewEncapsulation } from '@angular/core';
 import { FilterService, OrdemTipo } from '../../services/filter.service';
 import { CartService } from '../../services/cart.service';
 import { combineLatest } from 'rxjs';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-grid-products',
@@ -23,14 +23,14 @@ export class GridProductsComponent implements OnInit {
   ordem: OrdemTipo = 'relevantes';
 
   constructor(
-    private http: HttpClient,
+    private productService: ProductService,
     private filterService: FilterService,
     private cartService: CartService
   ) {}
 
   ngOnInit() {
-    this.http.get<Product[]>('assets/data/products.json').subscribe(data => {
-      this.products = data;
+    this.productService.getAll().subscribe(produtos => {
+    this.products = produtos;
 
       combineLatest([
         this.filterService.categorias$,

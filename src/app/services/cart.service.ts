@@ -14,6 +14,10 @@ export class CartService {
   private items = new BehaviorSubject<CartItem[]>([]);
   items$ = this.items.asObservable();
 
+  get currentItems(): CartItem[] {
+    return this.items.getValue();
+  }
+  
   get totalItems(): number {
     return this.items.getValue().reduce((sum, i) => sum + i.quantity, 0);
   }
