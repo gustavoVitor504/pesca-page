@@ -1,0 +1,26 @@
+<div class="header-content">
+  <div class="logo-content">
+    <logo-component></logo-component>
+    <h1>Tuvira & Tevaro</h1>
+  </div>
+  <nav class="navigation">
+    <ul>
+      <li><a routerLink="/">Home</a></li>
+      <li><a routerLink="/varas">Varas</a></li>
+      <li><a routerLink="/iscas">Iscas</a></li>
+      <li>
+        <a routerLink="/search">
+          <span class="material-icons">search</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/carrinho" class="cart-icon">
+          <span class="material-icons">shopping_cart</span>
+          <span class="cart-badge" *ngIf="(totalItems$ | async)! > 0">
+            {{ totalItems$ | async }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
