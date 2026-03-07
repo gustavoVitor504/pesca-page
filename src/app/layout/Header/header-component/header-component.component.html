@@ -21,6 +21,15 @@
           </span>
         </a>
       </li>
+      <button *ngIf="!isLoggedIn" (click)="irParaLogin()" class="btn-login">
+        Entrar
+      </button>
+
+      <!-- Se logado -->
+      <div *ngIf="isLoggedIn" class="user-info">
+        <span>Olá, {{ username }}</span>
+        <button (click)="logout()" class="btn-logout">Sair</button>
+      </div>
     </ul>
   </nav>
 </div>
