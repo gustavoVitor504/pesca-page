@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Vara Telescópica Shimano",
+    "category": "Varas",
+    "description": "Vara telescópica de alta resistência, ideal para pesca em rios e represas.",
+    "price": 389.90,
+    "originalPrice": 549.90,
+    "discount": 29,
+    "rating": 5.0,
+    "reviews": 42,
+    "image": "../assets/img/vara_shimano.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Kit Iscas Artificiais",
+    "category": "Iscas",
+    "description": "Conjunto com 12 iscas artificiais coloridas para diversas espécies.",
+    "price": 149.90,
+    "originalPrice": 199.90,
+    "discount": 25,
+    "rating": 4.0,
+    "reviews": 28,
+    "image": "../assets/img/isca_yara.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Molinete Profissional Daiwa",
+    "category": "Molinetes",
+    "description": "Molinete de alta performance com drag de 10kg.",
+    "price": 689.90,
+    "originalPrice": null,
+    "discount": null,
+    "rating": 5.0,
+    "reviews": 67,
+    "image": "../assets/img/molinete_shimano.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Linha Multifilamento 0.30mm",
+    "category": "Linhas",
+    "description": "Linha de alta resistência para pesca esportiva.",
+    "price": 49.90,
+    "originalPrice": null,
+    "discount": null,
+    "rating": 4.5,
+    "reviews": 15,
+    "image": "../assets/img/linha_multifilamento.jpg"
+  }
+]
