@@ -1,0 +1,59 @@
+/* ===== PRODUCT PAGE LAYOUT ===== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:host {
+  display: block;
+  background: #f4f7f9;
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.products-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  min-height: calc(100vh - 64px);
+}
+
+/* A sidebar fica diretamente no layout */
+side-bar {
+  padding: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sub-header ocupa largura total dentro do content */
+sub-header {
+  display: block;
+}
+
+/* Grid fica abaixo do sub-header com padding */
+app-grid-products {
+  display: block;
+  padding: 32px 32px 48px;
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 900px) {
+  .products-layout {
+    flex-direction: column;
+  }
+
+  side-bar {
+    padding: 24px 24px 0;
+
+    :host {
+      width: 100%;
+      position: static;
+    }
+  }
+
+  app-grid-products {
+    padding: 24px;
+  }
+}
