@@ -1,0 +1,35 @@
+<aside class="sidebar">
+  <div class="sidebar__header">
+    <span class="material-icons sidebar__header-icon">tune</span>
+    <h2 class="sidebar__title">Filtros</h2>
+  </div>
+
+  <p class="sidebar__section-title">Categorias</p>
+  <ul class="sidebar__categories">
+
+    <!-- "Todas" — controlado por todasMarcadas -->
+    <li class="sidebar__category-item">
+      <input
+        class="sidebar__checkbox"
+        type="checkbox"
+        id="todas"
+        [checked]="todasMarcadas"
+        (change)="onTodasChange()"
+      />
+      <label class="sidebar__category-label" for="todas">Todas</label>
+    </li>
+
+    <!-- Categorias individuais -->
+    <li class="sidebar__category-item" *ngFor="let cat of categorias">
+      <input
+        class="sidebar__checkbox"
+        type="checkbox"
+        [id]="cat"
+        [checked]="isSelecionada(cat)"
+        (change)="onCategoriaChange(cat, $any($event.target).checked)"
+      />
+      <label class="sidebar__category-label" [for]="cat">{{ cat }}</label>
+    </li>
+
+  </ul>
+</aside>
