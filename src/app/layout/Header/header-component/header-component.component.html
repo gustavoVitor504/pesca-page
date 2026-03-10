@@ -3,7 +3,12 @@
     <logo-component></logo-component>
     <h1>Tuvira & Tevaro</h1>
   </div>
-  <nav class="navigation">
+
+   <button class="menu-toggle" (click)="toggleMenu()">
+    <span class="material-icons">{{ menuAberto ? 'close' : 'menu' }}</span>
+  </button>
+
+  <nav class="navigation" [class.open]="menuAberto">
     <ul>
       <li><a routerLink="/">Home</a></li>
       <li><a routerLink="/varas">Varas</a></li>

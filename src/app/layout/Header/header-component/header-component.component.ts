@@ -15,6 +15,8 @@ import { NgIf } from '@angular/common';
 })
 export class HeaderComponentComponent implements OnInit {
 
+  menuAberto = false; 
+
   totalItems$ = this.cartService.items$.pipe(
     map(items => items.reduce((sum, i) => sum + i.quantity, 0))
   );
@@ -42,5 +44,12 @@ export class HeaderComponentComponent implements OnInit {
     window.location.href = isProd
       ? 'https://login-page.vercel.app'
       : 'http://localhost:4201';
+  }
+  toggleMenu() {
+  this.menuAberto = !this.menuAberto;
+  }
+
+  fecharMenu() {
+    this.menuAberto = false;
   }
 }

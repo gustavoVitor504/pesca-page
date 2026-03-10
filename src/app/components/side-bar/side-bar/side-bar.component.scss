@@ -2,24 +2,34 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap');
 
 :host {
-    display: block;
-    width: 280px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 88px;
+  display: block;
+  width: 280px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 88px;
+  align-self: flex-start;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    position: static;
+  }
 }
 
 .sidebar {
     
-    margin: 32px 0 32px 32px;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 28px 24px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    border: 1px solid #f0f0f0;
-    font-family: 'DM Sans', sans-serif;
-}
+  margin: 32px 0 32px 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  border: 1px solid #f0f0f0;
+  font-family: 'DM Sans', sans-serif;
 
+  @media (max-width: 768px) {
+    margin: 16px 16px 0;
+    padding: 16px;
+  }
+}
 .sidebar__header {
   display: flex;
   align-items: center;
@@ -112,4 +122,18 @@
   color: #2d3a42;
   cursor: pointer;
   flex: 1;
+}
+@media (max-width: 768px) {
+  .sidebar__categories {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .sidebar__category-item {
+    padding: 8px 12px;
+    background: #f4f7f9;
+    border-radius: 20px;
+    width: auto;
+  }
 }

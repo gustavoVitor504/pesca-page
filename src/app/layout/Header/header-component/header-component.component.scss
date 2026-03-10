@@ -1,55 +1,64 @@
 @import "../../../../assets/styles/style.scss";
 
 .header-content {
-    width: 100%;
-    height: 72px;
-    box-sizing: border-box;
+  width: 100%;
+  height: 72px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+  .logo-content {
     display: flex;
-    flex-direction: row;          // ← lado a lado
-    align-items: center;          // ← alinha verticalmente ao centro
-    justify-content: space-between; // ← logo na esquerda, nav na direita
-    padding: 0 20px;
-    position: fixed;
-    top: 0;
-    left: 0;  
-    z-index: 1000;
-    background-color: white;
+    align-items: center;
+    gap: 10px;
 
-    .logo-content {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-
-        logo-component {
-            margin: 5px 0 0 5px;
-            width: 60px;
-        }
-
-        h1 {
-            font-size: 25px;
-            width: 180px;
-        }
+    logo-component {
+      margin: 5px 0 0 5px;
+      width: 60px;
     }
 
-    .navigation {
-        // remova o margin-left: 80% — o space-between já cuida disso
-        ul {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            gap: 20px; // nav horizontal fica mais bonito
-
-            li a {
-                text-decoration: none;
-
-                &:hover {
-                    color: blue;
-                    cursor: pointer;
-                }
-            }
-        }
+    h1 {
+      font-size: 25px;
+      width: 180px;
     }
+  }
+
+  .navigation {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      li a {
+        text-decoration: none;
+        &:hover { color: blue; cursor: pointer; }
+      }
+    }
+  }
+
+  // Botão hamburguer — escondido no desktop
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #1a2332;
+  }
 }
+
+// Badge carrinho
 .cart-icon {
   position: relative;
   display: flex;
@@ -80,4 +89,46 @@
   0%   { transform: scale(0.6); }
   70%  { transform: scale(1.2); }
   100% { transform: scale(1); }
+}
+
+// ===== MOBILE =====
+@media (max-width: 768px) {
+  .header-content {
+    .logo-content h1 { font-size: 18px; width: auto; }
+
+    // Menu hamburguer aparece
+    .menu-toggle { display: block; }
+
+    // Nav vira dropdown
+    .navigation {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+
+      &.open {
+        max-height: 400px;
+        padding: 16px 0;
+      }
+
+      ul {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 0 24px;
+
+        li, button, div {
+          width: 100%;
+          padding: 12px 0;
+          border-bottom: 1px solid #f0f0f0;
+        }
+      }
+    }
+  }
 }

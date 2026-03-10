@@ -6,6 +6,7 @@
   background: #f4f7f9;
   min-height: 100vh;
   font-family: 'DM Sans', sans-serif;
+  padding-top: 72px;
 }
 
 .products-layout {
@@ -39,7 +40,7 @@ app-grid-products {
 }
 
 /* ---- Responsivo ---- */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .products-layout {
     flex-direction: column;
   }
@@ -54,6 +55,6 @@ app-grid-products {
   }
 
   app-grid-products {
-    padding: 24px;
+    padding: 16px;
   }
 }

@@ -14,6 +14,11 @@
   margin-bottom: 24px;
   flex-wrap: wrap;
   gap: 12px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .grid-toolbar__info h2 {
@@ -62,7 +67,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
 }
+
 
 /* ---- Card ---- */
 .product-card {
