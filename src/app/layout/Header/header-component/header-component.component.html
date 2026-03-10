@@ -4,22 +4,18 @@
     <h1>Tuvira & Tevaro</h1>
   </div>
 
-   <button class="menu-toggle" (click)="toggleMenu()">
+  <!-- Botão hamburguer (só aparece no mobile) -->
+  <button class="menu-toggle" (click)="toggleMenu()">
     <span class="material-icons">{{ menuAberto ? 'close' : 'menu' }}</span>
   </button>
 
   <nav class="navigation" [class.open]="menuAberto">
     <ul>
-      <li><a routerLink="/">Home</a></li>
-      <li><a routerLink="/varas">Varas</a></li>
-      <li><a routerLink="/iscas">Iscas</a></li>
+      <li><a routerLink="/" (click)="fecharMenu()">Home</a></li>
+      <li><a routerLink="/varas" (click)="fecharMenu()">Varas</a></li>
+      <li><a routerLink="/iscas" (click)="fecharMenu()">Iscas</a></li>
       <li>
-        <a routerLink="/search">
-          <span class="material-icons">search</span>
-        </a>
-      </li>
-      <li>
-        <a routerLink="/carrinho" class="cart-icon">
+        <a routerLink="/carrinho" class="cart-icon" (click)="fecharMenu()">
           <span class="material-icons">shopping_cart</span>
           <span class="cart-badge" *ngIf="(totalItems$ | async)! > 0">
             {{ totalItems$ | async }}
@@ -29,8 +25,6 @@
       <button *ngIf="!isLoggedIn" (click)="irParaLogin()" class="btn-login">
         Entrar
       </button>
-
-      <!-- Se logado -->
       <div *ngIf="isLoggedIn" class="user-info">
         <span>Olá, {{ username }}</span>
         <button (click)="logout()" class="btn-logout">Sair</button>
