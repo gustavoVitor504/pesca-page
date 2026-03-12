@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , PLATFORM_ID , Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponentComponent } from './layout/Header/header-component/header-component.component';
 
@@ -10,16 +11,19 @@ import { HeaderComponentComponent } from './layout/Header/header-component/heade
 })
 export class AppComponent implements OnInit {
 
-  ngOnInit() {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    const username = params.get('username');
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-    if (token) {
-      localStorage.setItem('auth_token', token);
-      if (username) localStorage.setItem('username', username);
-      // Limpa a URL sem recarregar a página
-      window.history.replaceState({}, '', '/');
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      const username = params.get('username');
+
+      if (token) {
+        localStorage.setItem('auth_token', token);
+        if (username) localStorage.setItem('username', username);
+        window.history.replaceState({}, '', '/');
+      }
     }
   }
 }

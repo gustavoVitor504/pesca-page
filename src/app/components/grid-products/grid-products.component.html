@@ -15,32 +15,45 @@
 </div>
 
 <div class="products-grid">
-  <ng-container *ngIf="produtosFiltrados.length > 0; else emptyState">
-    <div *ngFor="let produto of produtosFiltrados" class="product-card">
-      <div class="product-image">
-        <img [src]="produto.image" [alt]="produto.name" />
-        <span class="badge-category">{{ produto.category }}</span>
-        <span class="badge-discount" *ngIf="produto.discount">-{{ produto.discount }}%</span>
-      </div>
-      <div class="product-info">
-        <h3 class="product-name">{{ produto.name }}</h3>
-        <p class="product-description">{{ produto.description }}</p>
-      </div>
-      <div class="product-rating">
-        <span class="stars">{{ '★'.repeat(produto.rating) }}{{ '☆'.repeat(5 - produto.rating) }}</span>
-        <span>({{ produto.rating }})</span>
-      </div>
-      <div class="product-price">
-        <span class="price-current">{{ produto.price | currency:'BRL' }}</span>
-        <span class="price-original" *ngIf="produto.originalPrice">
-          {{ produto.originalPrice | currency:'BRL' }}
-        </span>
-      </div>
-      <button class="product-button" (click)="adicionarAoCarrinho(produto)">
-        <span class="material-icons">shopping_cart</span>
-        Adicionar ao Carrinho
-      </button>
+
+  <!-- Loading -->
+  <ng-container *ngIf="carregando">
+    <div class="product-card skeleton" *ngFor="let i of [1,2,3,4,5,6]">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
     </div>
+  </ng-container>
+
+  <!-- Produtos carregados -->
+  <ng-container *ngIf="!carregando">
+    <ng-container *ngIf="produtosFiltrados.length > 0; else emptyState">
+      <div *ngFor="let produto of produtosFiltrados" class="product-card">
+        <div class="product-image">
+          <img [src]="produto.image" [alt]="produto.name" />
+          <span class="badge-category">{{ produto.category }}</span>
+          <span class="badge-discount" *ngIf="produto.discount">-{{ produto.discount }}%</span>
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">{{ produto.name }}</h3>
+          <p class="product-description">{{ produto.description }}</p>
+        </div>
+        <div class="product-rating">
+          <span class="stars">{{ getStars(produto.rating) }}</span>
+          <span>({{ produto.rating }})</span>
+        </div>
+        <div class="product-price">
+          <span class="price-current">{{ produto.price | currency:'BRL' }}</span>
+          <span class="price-original" *ngIf="produto.originalPrice">
+            {{ produto.originalPrice | currency:'BRL' }}
+          </span>
+        </div>
+        <button class="product-button" (click)="adicionarAoCarrinho(produto)">
+          <span class="material-icons">shopping_cart</span>
+          Adicionar ao Carrinho
+        </button>
+      </div>
+    </ng-container>
   </ng-container>
 
   <ng-template #emptyState>
@@ -49,4 +62,5 @@
       <p>Nenhum produto encontrado para sua busca.</p>
     </div>
   </ng-template>
+
 </div>

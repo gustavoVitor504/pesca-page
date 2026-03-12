@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , PLATFORM_ID , Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { LogoComponent } from '../logo-component/logo-component.component';
 import { RouterLink , Router } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
@@ -26,24 +27,31 @@ export class HeaderComponentComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
-    this.isLoggedIn = !!localStorage.getItem('auth_token');
-    this.username = localStorage.getItem('username') || '';
+    if (isPlatformBrowser(this.platformId)) {
+      this.isLoggedIn = !!localStorage.getItem('auth_token');
+      this.username = localStorage.getItem('username') || '';
+    }
   }
   logout() {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('username');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('username');
+    }
     this.isLoggedIn = false;
     this.router.navigate(['/']);
   }
   irParaLogin() {
-    const isProd = window.location.hostname !== 'localhost';
-    window.location.href = isProd
-      ? 'https://login-page.vercel.app'
-      : 'http://localhost:4201';
+    if (isPlatformBrowser(this.platformId)) {
+      const isProd = window.location.hostname !== 'localhost';
+      window.location.href = isProd
+        ? 'https://login-page-silk-sigma.vercel.app'
+        : 'http://localhost:4201';
+    }
   }
   toggleMenu() {
   this.menuAberto = !this.menuAberto;

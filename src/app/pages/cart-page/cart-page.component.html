@@ -57,7 +57,7 @@
           <span>Total</span>
           <span>{{ total(items) | currency:'BRL' }}</span>
         </div>
-        <button class="btn-primary btn-checkout">
+        <button class="btn-primary btn-checkout" (click)="finalizarCompra()">
           <span class="material-icons">lock</span>
           Finalizar Compra
         </button>

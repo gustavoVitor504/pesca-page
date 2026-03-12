@@ -1,0 +1,267 @@
+<div class="checkout-wrapper">
+
+  <!-- Cabeçalho -->
+  <div class="checkout-header">
+    <button class="back-btn" routerLink="/carrinho">
+      <span class="material-icons">arrow_back</span>
+      Voltar ao carrinho
+    </button>
+    <div class="checkout-steps">
+      <span class="step active">1. Carrinho</span>
+      <span class="step-divider">›</span>
+      <span class="step active current">2. Pagamento</span>
+      <span class="step-divider">›</span>
+      <span class="step">3. Confirmação</span>
+    </div>
+  </div>
+
+  <!-- Layout principal -->
+  <div class="checkout-layout">
+
+    <!-- Coluna esquerda — formulário -->
+    <div class="checkout-form-col">
+
+      <!-- Método de pagamento -->
+      <section class="card-section">
+        <h2 class="section-title">
+          <span class="material-icons">payments</span>
+          Forma de Pagamento
+        </h2>
+
+        <div class="payment-methods">
+          <button
+            class="method-btn"
+            [class.active]="metodoPagamento === 'pix'"
+            (click)="metodoPagamento = 'pix'">
+            <img src="assets/img/pix-icon.png" alt="PIX" class="method-icon" onerror="this.style.display='none'"/>
+            <span class="material-icons method-fallback" *ngIf="true">qr_code_2</span>
+            <span>PIX</span>
+            <small>Aprovação imediata</small>
+          </button>
+
+          <button
+            class="method-btn"
+            [class.active]="metodoPagamento === 'cartao'"
+            (click)="metodoPagamento = 'cartao'">
+            <span class="material-icons">credit_card</span>
+            <span>Cartão</span>
+            <small>Até 12x</small>
+          </button>
+
+          <button
+            class="method-btn"
+            [class.active]="metodoPagamento === 'boleto'"
+            (click)="metodoPagamento = 'boleto'">
+            <span class="material-icons">receipt_long</span>
+            <span>Boleto</span>
+            <small>Vence em 3 dias</small>
+          </button>
+        </div>
+      </section>
+
+      <!-- Formulário PIX -->
+      <section class="card-section" *ngIf="metodoPagamento === 'pix'">
+        <h2 class="section-title">
+          <span class="material-icons">person</span>
+          Seus Dados
+        </h2>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>E-mail</label>
+            <input type="email" [(ngModel)]="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group full">
+            <label>CPF</label>
+            <input type="text" [(ngModel)]="cpf" placeholder="000.000.000-00" maxlength="14" />
+          </div>
+        </div>
+        <div class="pix-info">
+          <span class="material-icons">info</span>
+          <p>Após confirmar, você receberá um QR Code PIX para escanear. O pagamento é aprovado em segundos.</p>
+        </div>
+      </section>
+
+      <!-- Formulário Cartão -->
+      <section class="card-section" *ngIf="metodoPagamento === 'cartao'">
+        <h2 class="section-title">
+          <span class="material-icons">credit_card</span>
+          Dados do Cartão
+        </h2>
+
+        <!-- Preview do cartão -->
+        <div class="card-preview" [class.flipped]="focusCvv">
+          <div class="card-front">
+            <div class="card-chip"></div>
+            <div class="card-number-preview">
+              {{ cardNumber || '•••• •••• •••• ••••' }}
+            </div>
+            <div class="card-bottom">
+              <div>
+                <small>TITULAR</small>
+                <span>{{ cardName || 'SEU NOME' }}</span>
+              </div>
+              <div>
+                <small>VALIDADE</small>
+                <span>{{ cardExpiry || 'MM/AA' }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-back">
+            <div class="card-stripe"></div>
+            <div class="card-cvv-box">
+              <small>CVV</small>
+              <span>{{ cardCvv || '•••' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Número do Cartão</label>
+            <input type="text" [(ngModel)]="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" />
+          </div>
+          <div class="form-group full">
+            <label>Nome no Cartão</label>
+            <input type="text" [(ngModel)]="cardName" placeholder="Como está no cartão" />
+          </div>
+          <div class="form-group">
+            <label>Validade</label>
+            <input type="text" [(ngModel)]="cardExpiry" placeholder="MM/AA" maxlength="5" />
+          </div>
+          <div class="form-group">
+            <label>CVV</label>
+            <input type="text" [(ngModel)]="cardCvv" placeholder="•••"
+              maxlength="4"
+              (focus)="focusCvv = true"
+              (blur)="focusCvv = false" />
+          </div>
+          <div class="form-group full">
+            <label>Parcelas</label>
+            <select [(ngModel)]="installments">
+              <option [value]="1">1x de {{ total | currency:'BRL' }} sem juros</option>
+              <option [value]="2">2x de {{ total / 2 | currency:'BRL' }} sem juros</option>
+              <option [value]="3">3x de {{ total / 3 | currency:'BRL' }} sem juros</option>
+              <option [value]="6">6x de {{ total / 6 | currency:'BRL' }} sem juros</option>
+              <option [value]="12">12x de {{ total / 12 | currency:'BRL' }} com juros</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>E-mail</label>
+            <input type="email" [(ngModel)]="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group full">
+            <label>CPF do Titular</label>
+            <input type="text" [(ngModel)]="cpf" placeholder="000.000.000-00" maxlength="14" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulário Boleto -->
+      <section class="card-section" *ngIf="metodoPagamento === 'boleto'">
+        <h2 class="section-title">
+          <span class="material-icons">person</span>
+          Seus Dados
+        </h2>
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>E-mail</label>
+            <input type="email" [(ngModel)]="email" placeholder="seu@email.com" />
+          </div>
+          <div class="form-group full">
+            <label>CPF</label>
+            <input type="text" [(ngModel)]="cpf" placeholder="000.000.000-00" maxlength="14" />
+          </div>
+        </div>
+        <div class="boleto-info">
+          <span class="material-icons">schedule</span>
+          <p>O boleto vence em 3 dias úteis. Após o pagamento, pode levar até 2 dias úteis para compensar.</p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Coluna direita — resumo do pedido -->
+    <div class="checkout-summary-col">
+      <section class="card-section summary-card">
+        <h2 class="section-title">
+          <span class="material-icons">shopping_bag</span>
+          Resumo do Pedido
+        </h2>
+
+        <div class="summary-items" *ngIf="items$ | async as items">
+          <div class="summary-item" *ngFor="let item of items">
+            <div class="summary-item-info">
+              <span class="summary-item-name">{{ item.product.name }}</span>
+              <span class="summary-item-qty">x{{ item.quantity }}</span>
+            </div>
+            <span class="summary-item-price">
+              {{ item.product.price * item.quantity | currency:'BRL' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>{{ total | currency:'BRL' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Frete</span>
+          <span class="free-shipping">Grátis</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row total-row">
+          <span>Total</span>
+          <span>{{ total | currency:'BRL' }}</span>
+        </div>
+
+        <!-- Resultado PIX -->
+        <div class="pix-result" *ngIf="resultado && resultado.qrCodeBase64">
+          <h3>Escaneie o QR Code PIX</h3>
+          <img [src]="'data:image/png;base64,' + resultado.qrCodeBase64" alt="QR Code PIX" />
+          <div class="pix-code">
+            <small>Ou copie o código:</small>
+            <code>{{ resultado.qrCode }}</code>
+            <button (click)="copiarPix()">
+              <span class="material-icons">content_copy</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resultado Boleto -->
+        <div class="boleto-result" *ngIf="resultado && resultado.boletoUrl">
+          <h3>Boleto gerado!</h3>
+          <a [href]="resultado.boletoUrl" target="_blank" class="btn-boleto">
+            <span class="material-icons">open_in_new</span>
+            Abrir Boleto
+          </a>
+        </div>
+
+        <!-- Aprovado -->
+        <div class="approved-result" *ngIf="resultado && resultado.status === 'approved'">
+          <span class="material-icons">check_circle</span>
+          <h3>Pagamento Aprovado!</h3>
+          <p>Seu pedido foi confirmado.</p>
+        </div>
+
+        <!-- Botão pagar -->
+        <button
+          class="btn-pagar"
+          (click)="pagar()"
+          [disabled]="carregando || !!resultado"
+          *ngIf="!resultado || resultado.status === 'rejected'">
+          <span class="material-icons" *ngIf="!carregando">lock</span>
+          <span class="spinner" *ngIf="carregando"></span>
+          {{ carregando ? 'Processando...' : 'Confirmar Pagamento' }}
+        </button>
+
+        <div class="security-badge">
+          <span class="material-icons">verified_user</span>
+          <span>Pagamento seguro via Mercado Pago</span>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</div>

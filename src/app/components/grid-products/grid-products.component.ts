@@ -18,6 +18,7 @@ import { ProductService } from '../../services/product.service';
 export class GridProductsComponent implements OnInit {
   products: Product[] = [];
   produtosFiltrados: Product[] = [];
+  carregando: boolean = true;
   busca: string = '';
   categorias: string[] = [];
   ordem: OrdemTipo = 'relevantes';
@@ -29,20 +30,30 @@ export class GridProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.productService.getAll().subscribe(produtos => {
-    this.products = produtos;
+    this.productService.getAll().subscribe({
+      next: (produtos) => {
+        this.products = produtos;
+        this.carregando = false;
 
-      combineLatest([
-        this.filterService.categorias$,
-        this.filterService.busca$,
-        this.filterService.ordem$
-      ]).subscribe(([categorias, busca, ordem]) => {
-        this.categorias = categorias;
-        this.busca = busca;
-        this.ordem = ordem;
-        this.aplicarFiltros();
-      });
+        combineLatest([
+          this.filterService.categorias$,
+          this.filterService.busca$,
+          this.filterService.ordem$
+        ]).subscribe(([categorias, busca, ordem]) => {
+          this.categorias = categorias;
+          this.busca = busca;
+          this.ordem = ordem;
+          this.aplicarFiltros();
+        });
+      },
+      error: () => {
+        this.carregando = false;
+      }
     });
+  }
+   getStars(rating: number): string {
+    const full = Math.round(rating);
+    return '★'.repeat(full) + '☆'.repeat(5 - full);
   }
 
   aplicarFiltros() {

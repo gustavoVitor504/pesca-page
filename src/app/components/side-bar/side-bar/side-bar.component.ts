@@ -10,7 +10,7 @@ import { FilterService } from '../../../services/filter.service';
   styleUrl: './side-bar.component.scss'
 })
 export class SideBarComponent {
-  categorias = ['Varas', 'Iscas', 'Acessórios', 'Linhas', 'Molinetes'];
+  categorias = ['Varas', 'Iscas', 'Acessórios', 'Linhas', 'Molinetes' , 'Carretilhas'];
   categoriasSelecionadas: string[] = [];
   todasMarcadas: boolean = true; // ← começa com "Todas" marcado
 
