@@ -1,0 +1,332 @@
+<div class="admin-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar" [class.collapsed]="sidebarCollapsed">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <span class="material-icons">phishing</span>
+        <span class="sidebar-logo-text">Admin</span>
+      </div>
+      <button class="sidebar-toggle" (click)="sidebarCollapsed = !sidebarCollapsed">
+        <span class="material-icons">{{ sidebarCollapsed ? 'menu' : 'menu_open' }}</span>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item" [class.active]="activeTab === 'dashboard'" (click)="activeTab = 'dashboard'">
+        <span class="material-icons">dashboard</span>
+        <span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab === 'products'" (click)="activeTab = 'products'; carregarProdutos()">
+        <span class="material-icons">inventory_2</span>
+        <span class="nav-label">Produtos</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'; carregarPedidos()">
+        <span class="material-icons">receipt_long</span>
+        <span class="nav-label">Pedidos</span>
+        <span class="nav-badge" *ngIf="stats && stats.pendingOrders > 0">{{ stats.pendingOrders }}</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="nav-item" routerLink="/">
+        <span class="material-icons">storefront</span>
+        <span class="nav-label">Ver Loja</span>
+      </button>
+      <button class="nav-item logout" (click)="logout()">
+        <span class="material-icons">logout</span>
+        <span class="nav-label">Sair</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Conteúdo principal -->
+  <main class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="admin-header-left">
+        <h1 class="admin-title">
+          {{ activeTab === 'dashboard' ? 'Dashboard' : activeTab === 'products' ? 'Produtos' : 'Pedidos' }}
+        </h1>
+      </div>
+      <div class="admin-header-right">
+        <span class="admin-user">
+          <span class="material-icons">admin_panel_settings</span>
+          {{ adminName }}
+        </span>
+      </div>
+    </header>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section *ngIf="activeTab === 'dashboard'" class="tab-content">
+      <div class="stats-grid" *ngIf="stats">
+        <div class="stat-card">
+          <div class="stat-icon revenue"><span class="material-icons">payments</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Receita Total</span>
+            <span class="stat-value">{{ stats.totalRevenue | currency:'BRL' }}</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orders"><span class="material-icons">receipt_long</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Total de Pedidos</span>
+            <span class="stat-value">{{ stats.totalOrders }}</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon pending"><span class="material-icons">pending</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Pedidos Pendentes</span>
+            <span class="stat-value">{{ stats.pendingOrders }}</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon products"><span class="material-icons">inventory_2</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Produtos</span>
+            <span class="stat-value">{{ stats.totalProducts }}</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon users"><span class="material-icons">people</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Usuários</span>
+            <span class="stat-value">{{ stats.totalUsers }}</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon confirmed"><span class="material-icons">check_circle</span></div>
+          <div class="stat-info">
+            <span class="stat-label">Confirmados</span>
+            <span class="stat-value">{{ stats.confirmedOrders }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-actions">
+        <button class="btn-primary" (click)="activeTab = 'products'; abrirFormProduto()">
+          <span class="material-icons">add</span>
+          Novo Produto
+        </button>
+        <button class="btn-secondary" (click)="activeTab = 'orders'; carregarPedidos()">
+          <span class="material-icons">receipt_long</span>
+          Ver Pedidos
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== PRODUTOS ===== -->
+    <section *ngIf="activeTab === 'products'" class="tab-content">
+      <div class="section-toolbar">
+        <input class="search-input" placeholder="Buscar produto..." [(ngModel)]="buscaProduto" />
+        <button class="btn-primary" (click)="abrirFormProduto()">
+          <span class="material-icons">add</span>
+          Novo Produto
+        </button>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Imagem</th>
+              <th>Nome</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Estoque</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of produtosFiltrados">
+              <td>
+                <img [src]="p.image" [alt]="p.name" class="table-img" />
+              </td>
+              <td>
+                <span class="product-name-cell">{{ p.name }}</span>
+                <small>{{ p.description | slice:0:50 }}...</small>
+              </td>
+              <td><span class="badge-category">{{ p.category }}</span></td>
+              <td>
+                <span class="price-cell">{{ p.price | currency:'BRL' }}</span>
+                <small *ngIf="p.discount" class="discount-tag">-{{ p.discount }}%</small>
+              </td>
+              <td>
+                <span class="stock-cell" [class.low]="p.stock && p.stock <= 5">{{ p.stock }}</span>
+              </td>
+              <td class="actions-cell">
+                <button class="btn-icon edit" (click)="editarProduto(p)">
+                  <span class="material-icons">edit</span>
+                </button>
+                <button class="btn-icon delete" (click)="confirmarDelete(p)">
+                  <span class="material-icons">delete</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="empty-state" *ngIf="produtosFiltrados.length === 0">
+          <span class="material-icons">inventory_2</span>
+          <p>Nenhum produto encontrado</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PEDIDOS ===== -->
+    <section *ngIf="activeTab === 'orders'" class="tab-content">
+      <div class="section-toolbar">
+        <div class="status-filters">
+          <button class="filter-btn" [class.active]="filtroStatus === ''" (click)="filtroStatus = ''">Todos</button>
+          <button class="filter-btn pending" [class.active]="filtroStatus === 'PENDING'" (click)="filtroStatus = 'PENDING'">Pendente</button>
+          <button class="filter-btn confirmed" [class.active]="filtroStatus === 'CONFIRMED'" (click)="filtroStatus = 'CONFIRMED'">Confirmado</button>
+          <button class="filter-btn shipped" [class.active]="filtroStatus === 'SHIPPED'" (click)="filtroStatus = 'SHIPPED'">Enviado</button>
+          <button class="filter-btn delivered" [class.active]="filtroStatus === 'DELIVERED'" (click)="filtroStatus = 'DELIVERED'">Entregue</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente</th>
+              <th>Itens</th>
+              <th>Total</th>
+              <th>Data</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let o of pedidosFiltrados">
+              <td><span class="order-id">#{{ o.id }}</span></td>
+              <td>
+                <span class="customer-name">{{ o.userName }}</span>
+                <small>{{ o.userEmail }}</small>
+              </td>
+              <td>
+                <div class="items-list">
+                  <span *ngFor="let item of o.items" class="item-chip">
+                    {{ item.productName }} x{{ item.quantity }}
+                  </span>
+                </div>
+              </td>
+              <td><span class="price-cell">{{ o.total | currency:'BRL' }}</span></td>
+              <td><small>{{ o.createdAt | date:'dd/MM/yy HH:mm' }}</small></td>
+              <td>
+                <span class="status-badge" [class]="'status-' + o.status.toLowerCase()">
+                  {{ getStatusLabel(o.status) }}
+                </span>
+              </td>
+              <td>
+                <select class="status-select" [value]="o.status" (change)="atualizarStatus(o, $event)">
+                  <option value="PENDING">Pendente</option>
+                  <option value="CONFIRMED">Confirmado</option>
+                  <option value="SHIPPED">Enviado</option>
+                  <option value="DELIVERED">Entregue</option>
+                  <option value="CANCELLED">Cancelado</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="empty-state" *ngIf="pedidosFiltrados.length === 0">
+          <span class="material-icons">receipt_long</span>
+          <p>Nenhum pedido encontrado</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ===== MODAL PRODUTO ===== -->
+<div class="modal-overlay" *ngIf="modalAberto" (click)="fecharModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ produtoEditando.id ? 'Editar Produto' : 'Novo Produto' }}</h2>
+      <button class="modal-close" (click)="fecharModal()">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nome</label>
+          <input type="text" [(ngModel)]="produtoEditando.name" placeholder="Nome do produto" />
+        </div>
+        <div class="form-group full">
+          <label>Descrição</label>
+          <textarea [(ngModel)]="produtoEditando.description" rows="3" placeholder="Descrição do produto"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Preço (R$)</label>
+          <input type="number" [(ngModel)]="produtoEditando.price" placeholder="0.00" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Preço Original (R$)</label>
+          <input type="number" [(ngModel)]="produtoEditando.originalPrice" placeholder="0.00" step="0.01" />
+        </div>
+        <div class="form-group">
+          <label>Categoria</label>
+          <select [(ngModel)]="produtoEditando.category">
+            <option value="">Selecione</option>
+            <option value="Varas">Varas</option>
+            <option value="Iscas">Iscas</option>
+            <option value="Acessórios">Acessórios</option>
+            <option value="Linhas">Linhas</option>
+            <option value="Molinetes">Molinetes</option>
+            <option value="Carretilhas">Carretilhas</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estoque</label>
+          <input type="number" [(ngModel)]="produtoEditando.stock" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label>Desconto (%)</label>
+          <input type="number" [(ngModel)]="produtoEditando.discount" placeholder="0" min="0" max="100" />
+        </div>
+        <div class="form-group">
+          <label>Rating (1-5)</label>
+          <input type="number" [(ngModel)]="produtoEditando.rating" placeholder="5" min="1" max="5" />
+        </div>
+        <div class="form-group full">
+          <label>URL da Imagem</label>
+          <input type="text" [(ngModel)]="produtoEditando.image" placeholder="https://..." />
+          <div class="image-preview" *ngIf="produtoEditando.image">
+            <img [src]="produtoEditando.image" alt="preview" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="fecharModal()">Cancelar</button>
+      <button class="btn-primary" (click)="salvarProduto()" [disabled]="salvando">
+        <span class="spinner" *ngIf="salvando"></span>
+        {{ salvando ? 'Salvando...' : 'Salvar' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL CONFIRMAR DELETE ===== -->
+<div class="modal-overlay" *ngIf="modalDeleteAberto" (click)="modalDeleteAberto = false">
+  <div class="modal modal-sm" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Confirmar exclusão</h2>
+    </div>
+    <div class="modal-body">
+      <p>Deseja excluir o produto <strong>{{ produtoParaDeletar?.name }}</strong>?</p>
+      <p class="warning-text">Esta ação não pode ser desfeita.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="modalDeleteAberto = false">Cancelar</button>
+      <button class="btn-danger" (click)="deletarProduto()">Excluir</button>
+    </div>
+  </div>
+</div>

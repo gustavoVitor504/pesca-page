@@ -10,6 +10,12 @@
   </button>
 
   <nav class="navigation" [class.open]="menuAberto">
+    <div class="admin" NgIf="isLoggedIn && isAdmin">
+      <a routerLink="/admin" (click)="fecharMenu()">
+        <span class="material-icons">admin_panel_settings</span>
+        Admin
+      </a>
+    </div>
     <ul>
       <li><a routerLink="/" (click)="fecharMenu()">Home</a></li>
       <li><a routerLink="/varas" (click)="fecharMenu()">Varas</a></li>

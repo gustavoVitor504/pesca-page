@@ -1,7 +1,7 @@
 import { Component, OnInit , PLATFORM_ID , Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LogoComponent } from '../logo-component/logo-component.component';
-import { RouterLink , Router } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { AsyncPipe } from '@angular/common';
 import { map } from 'rxjs/operators';
@@ -24,6 +24,7 @@ export class HeaderComponentComponent implements OnInit {
 
   isLoggedIn = false;
   username = '';
+  isAdmin = false;
 
   constructor(
     private cartService: CartService,
@@ -35,6 +36,7 @@ export class HeaderComponentComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.isLoggedIn = !!localStorage.getItem('auth_token');
       this.username = localStorage.getItem('username') || '';
+      this.isAdmin = localStorage.getItem('role') === 'ROLE_ADMIN';
     }
   }
   logout() {

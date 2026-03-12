@@ -3,6 +3,7 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
 import { CartPageComponent } from './pages/cart-page/cart-page.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
+import { AdminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -18,5 +19,10 @@ export const routes: Routes = [
     path: 'checkout', 
     component: CheckoutPageComponent, 
     canActivate: [AuthGuard] 
+  },
+  {
+    path: 'admin',
+    loadComponent: () => import('./pages/admin-page/admin-page.component').then(m => m.AdminPageComponent),
+    canActivate: [AdminGuard]
   }
 ];
