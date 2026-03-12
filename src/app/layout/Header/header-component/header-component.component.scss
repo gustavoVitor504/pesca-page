@@ -56,6 +56,32 @@
     padding: 4px;
     color: #1a2332;
   }
+  .admin {
+    display: flex;
+    align-items: center;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+      color: #1a6478;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: rgba(26, 100, 120, 0.08);
+        color: $primary-dark;
+      }
+
+      .material-icons {
+        font-size: 1.1rem;
+      }
+    }
+  }
 }
 
 // Badge carrinho
@@ -123,7 +149,7 @@
         gap: 0;
         padding: 0 24px;
 
-        li, button, div {
+        li, button, div, .admin {
           width: 100%;
           padding: 12px 0;
           border-bottom: 1px solid #f0f0f0;

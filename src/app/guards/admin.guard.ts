@@ -15,7 +15,6 @@ export const AdminGuard = (): boolean => {
   }
 
   try {
-    // Decodifica o payload do JWT para verificar a role
     const payload = JSON.parse(atob(token.split('.')[1]));
     if (payload.role === 'ROLE_ADMIN') {
         return true;

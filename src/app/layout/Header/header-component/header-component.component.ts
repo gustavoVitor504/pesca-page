@@ -36,7 +36,14 @@ export class HeaderComponentComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       this.isLoggedIn = !!localStorage.getItem('auth_token');
       this.username = localStorage.getItem('username') || '';
-      this.isAdmin = localStorage.getItem('role') === 'ROLE_ADMIN';
+      const token = localStorage.getItem('auth_token');
+      
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          this.isAdmin = payload.role === 'ROLE_ADMIN';
+        } catch {}
+      }
     }
   }
   logout() {
@@ -54,6 +61,9 @@ export class HeaderComponentComponent implements OnInit {
         ? 'https://login-page-silk-sigma.vercel.app'
         : 'http://localhost:4201';
     }
+  }
+  IrParaAdmin() {
+    this.router.navigate(['/admin']);
   }
   toggleMenu() {
   this.menuAberto = !this.menuAberto;
