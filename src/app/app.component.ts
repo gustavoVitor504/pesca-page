@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
         localStorage.setItem('auth_token', token);
         if (username) localStorage.setItem('username', username);
         window.history.replaceState({}, '', '/');
+        window.location.reload();
       }
     }
   }
