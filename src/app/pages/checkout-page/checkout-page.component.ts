@@ -26,6 +26,7 @@ export class CheckoutPageComponent implements OnInit {
   cardCvv = '';
   installments = 1;
   focusCvv = false;
+  paymentMethodId = 'visa'; 
 
   // Dados do pagador
   email = '';
@@ -77,8 +78,8 @@ async gerarTokenCartao(): Promise<string> {
   });
 
   if (result.error) throw new Error(result.error);
-  return result.id; // esse é o cardToken
-}
+    return result.id; // esse é o cardToken
+  }
 
   get total(): number {
     return this.cartService.currentItems.reduce(
@@ -109,7 +110,7 @@ async gerarTokenCartao(): Promise<string> {
     this.orderService.create(items).subscribe({
       next: (pedido) => {
         const request: PaymentRequest = {
-          paymentMethodId: this.metodoPagamento === 'cartao' ? 'visa' : this.metodoPagamento,
+          paymentMethodId: this.paymentMethodId,
           token: cardToken, // ← agora é o token real
           installments: this.installments,
           transactionAmount: this.total,
@@ -158,5 +159,17 @@ async gerarTokenCartao(): Promise<string> {
       navigator.clipboard.writeText(this.resultado.qrCode);
       alert('Código PIX copiado!');
     }
+  }
+  detectarBandeira(numero: string): string {
+    const n = numero.replace(/\s/g, '');
+    if (/^4/.test(n)) return 'visa';
+    if (/^5[1-5]/.test(n)) return 'master';
+    if (/^3[47]/.test(n)) return 'amex';
+    if (/^(36|38|30[0-5])/.test(n)) return 'diners';
+    if (/^6(?:011|5)/.test(n)) return 'discover';
+    if (/^(?:2131|1800|35)/.test(n)) return 'jcb';
+    if (/^(606282|3841)/.test(n)) return 'hipercard';
+    if (/^(38|60)/.test(n)) return 'elo';
+    return 'visa';
   }
 }
