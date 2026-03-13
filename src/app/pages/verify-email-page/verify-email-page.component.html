@@ -1,0 +1,18 @@
+<div class="verify-container">
+    <div class="verify-card" *ngIf="status === 'loading'">
+        <span class="material-icons spin">autorenew</span>
+        <p>Verificando seu email...</p>
+    </div>
+    <div class="verify-card success" *ngIf="status === 'success'">
+        <span class="material-icons">check_circle</span>
+        <h2>Email verificado!</h2>
+        <p>Sua conta foi ativada com sucesso.</p>
+        <a href="https://login-page-silk-sigma.vercel.app">Fazer login</a>
+    </div>
+    <div class="verify-card error" *ngIf="status === 'error'">
+        <span class="material-icons">error</span>
+        <h2>Link inválido</h2>
+        <p>Este link de verificação é inválido ou já foi utilizado.</p>
+        <a href="https://login-page-silk-sigma.vercel.app">Ir para o login</a>
+    </div>
+</div>
