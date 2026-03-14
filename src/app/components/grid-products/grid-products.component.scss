@@ -236,6 +236,17 @@
     transform: scale(0.98);
   }
 }
+.product-button.secondary {
+  background: transparent;
+  border: 2px solid $primary;
+  color: $primary;
+  margin-top: 8px;
+
+  &:hover {
+    background: $primary;
+    color: white;
+  }
+}
 
 /* ---- Empty state ---- */
 .grid-empty {

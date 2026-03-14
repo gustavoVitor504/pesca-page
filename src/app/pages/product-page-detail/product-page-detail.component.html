@@ -1,0 +1,89 @@
+<!-- Loading -->
+<div class="detail-loading" *ngIf="carregando">
+  <span class="material-icons spin">autorenew</span>
+</div>
+
+<div class="detail-container" *ngIf="!carregando && produto">
+
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb">
+    <a routerLink="/">Home</a>
+    <span class="material-icons">chevron_right</span>
+    <span>{{ produto.category }}</span>
+    <span class="material-icons">chevron_right</span>
+    <span>{{ produto.name }}</span>
+  </nav>
+
+  <!-- Produto principal -->
+  <div class="detail-main">
+
+    <!-- Imagem -->
+    <div class="detail-image">
+      <span class="badge-discount" *ngIf="produto.discount">-{{ produto.discount }}%</span>
+      <img [src]="produto.image" [alt]="produto.name" />
+    </div>
+
+    <!-- Info -->
+    <div class="detail-info">
+      <span class="detail-category">{{ produto.category }}</span>
+      <h1 class="detail-name">{{ produto.name }}</h1>
+
+      <!-- Rating -->
+      <div class="detail-rating">
+        <span class="stars">{{ getStars(produto.rating) }}</span>
+        <span class="rating-value">({{ produto.rating }}/5)</span>
+      </div>
+
+      <!-- Preço -->
+      <div class="detail-price">
+        <span class="price-current">{{ produto.price | currency:'BRL' }}</span>
+        <span class="price-original" *ngIf="produto.originalPrice">
+          {{ produto.originalPrice | currency:'BRL' }}
+        </span>
+        <span class="price-economy" *ngIf="produto.discount">
+          Economia de {{ produto.discount }}%
+        </span>
+      </div>
+
+      <!-- Descrição -->
+      <p class="detail-description">{{ produto.description }}</p>
+
+      <!-- Quantidade -->
+      <div class="detail-quantity">
+        <span>Quantidade:</span>
+        <div class="quantity-control">
+          <button (click)="decrementar()">−</button>
+          <span>{{ quantidade }}</span>
+          <button (click)="incrementar()">+</button>
+        </div>
+      </div>
+
+      <!-- Botão carrinho -->
+      <button class="btn-add-cart" (click)="adicionarAoCarrinho()">
+        <span class="material-icons">shopping_cart</span>
+        Adicionar ao Carrinho
+      </button>
+
+      <button class="btn-back" (click)="router.navigate(['/'])">
+        <span class="material-icons">arrow_back</span>
+        Continuar Comprando
+      </button>
+    </div>
+  </div>
+
+  <!-- Produtos relacionados -->
+  <div class="related-section" *ngIf="produtosRelacionados.length > 0">
+    <h2>Produtos Relacionados</h2>
+    <div class="related-grid">
+      <div *ngFor="let p of produtosRelacionados" class="related-card" (click)="verDetalhes(p.id)">
+        <img [src]="p.image" [alt]="p.name" />
+        <div class="related-info">
+          <h4>{{ p.name }}</h4>
+          <div class="stars">{{ getStars(p.rating) }}</div>
+          <span class="related-price">{{ p.price | currency:'BRL' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

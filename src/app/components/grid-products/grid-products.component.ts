@@ -6,6 +6,7 @@ import { FilterService, OrdemTipo } from '../../services/filter.service';
 import { CartService } from '../../services/cart.service';
 import { combineLatest } from 'rxjs';
 import { ProductService } from '../../services/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-grid-products',
@@ -26,7 +27,8 @@ export class GridProductsComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private filterService: FilterService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -86,5 +88,8 @@ export class GridProductsComponent implements OnInit {
   onOrdemChange(event: Event) {
     const value = (event.target as HTMLSelectElement).value as OrdemTipo;
     this.filterService.setOrdem(value);
+  }
+  verDetalhes(id: number) {
+    this.router.navigate(['/produto', id]);
   }
 }

@@ -29,5 +29,9 @@ export const routes: Routes = [
   { 
     path: 'verificar-email', 
     component: VerifyEmailPageComponent 
+  },
+  { 
+    path: 'produto/:id', 
+    component: ProductPageDetailComponent 
   }
 ];
