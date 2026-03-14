@@ -1,11 +1,11 @@
-@import "../../../../assets/styles/style.scss";
+@import "../../../assets/styles/style.scss";
 
 .detail-loading {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 60vh;
-  .material-icons { font-size: 48px; color: $primary; animation: spin 1s linear infinite; }
+  .material-icons { font-size: 48px; color: $primary-color; animation: spin 1s linear infinite; }
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -24,7 +24,7 @@
   font-size: 0.9rem;
   color: #666;
 
-  a { color: $primary; text-decoration: none; &:hover { text-decoration: underline; } }
+  a { color: $primary-color; text-decoration: none; &:hover { text-decoration: underline; } }
   .material-icons { font-size: 1rem; }
 }
 
@@ -69,7 +69,7 @@
 }
 
 .detail-category {
-  color: $primary;
+  color: $primary-color;
   font-weight: 600;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -97,7 +97,7 @@
   gap: 12px;
   flex-wrap: wrap;
 
-  .price-current { font-size: 2rem; font-weight: 700; color: $primary; }
+  .price-current { font-size: 2rem; font-weight: 700; color: $primary-color; }
   .price-original { font-size: 1.1rem; color: #999; text-decoration: line-through; }
   .price-economy {
     background: #f0fff4;
@@ -155,7 +155,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: $primary;
+  background: $primary-color;
   color: white;
   border: none;
   padding: 16px 32px;
@@ -165,7 +165,7 @@
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 
-  &:hover { background: darken($primary, 8%); transform: translateY(-1px); }
+  &:hover { background: darken($primary-color, 8%); transform: translateY(-1px); }
   &:active { transform: translateY(0); }
 }
 
@@ -182,7 +182,7 @@
   cursor: pointer;
   transition: all 0.2s;
 
-  &:hover { border-color: $primary; color: $primary; }
+  &:hover { border-color: $primary-color; color: $primary-color; }
 }
 
 // Relacionados
@@ -213,6 +213,6 @@
     padding: 12px;
     h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; }
     .stars { color: #f59e0b; font-size: 0.9rem; }
-    .related-price { color: $primary; font-weight: 700; font-size: 1rem; }
+    .related-price { color: $primary-color; font-weight: 700; font-size: 1rem; }
   }
 }
