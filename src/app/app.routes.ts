@@ -5,6 +5,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.component';
 import { AdminGuard } from './guards/admin.guard';
 import { VerifyEmailPageComponent } from './pages/verify-email-page/verify-email-page.component';
+import { ProductPageDetailComponent } from './pages/product-page-detail/product-page-detail.component';
 
 export const routes: Routes = [
   {

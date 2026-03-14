@@ -57,7 +57,7 @@
     transition: border-color 0.2s;
 
     &:focus {
-      border-color: #1a6478;
+      border-color: $primary-color;
     }
   }
 }
@@ -238,12 +238,12 @@
 }
 .product-button.secondary {
   background: transparent;
-  border: 2px solid $primary;
-  color: $primary;
+  border: 2px solid $primary-color;
+  color: $primary-color;
   margin-top: 8px;
 
   &:hover {
-    background: $primary;
+    background: $primary-color;
     color: white;
   }
 }
