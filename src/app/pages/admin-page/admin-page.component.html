@@ -294,11 +294,43 @@
           <label>Rating (1-5)</label>
           <input type="number" [(ngModel)]="produtoEditando.rating" placeholder="5" min="1" max="5" />
         </div>
+        <!-- Imagem Principal -->
         <div class="form-group full">
-          <label>URL da Imagem</label>
-          <input type="text" [(ngModel)]="produtoEditando.image" placeholder="https://..." />
+          <label>Imagem Principal</label>
+          <div class="upload-area">
+            <input type="file" accept="image/*" #inputPrincipal
+                  (change)="uploadImagem($event, 'principal')" style="display:none" />
+            <button type="button" class="btn-upload" (click)="inputPrincipal.click()"
+                    [disabled]="uploadingImagem">
+              <span class="material-icons">upload</span>
+              {{ uploadingImagem ? 'Enviando...' : 'Upload Imagem Principal' }}
+            </button>
+            <input type="text" [(ngModel)]="produtoEditando.image"
+                  placeholder="Ou cole a URL diretamente" />
+          </div>
           <div class="image-preview" *ngIf="produtoEditando.image">
             <img [src]="produtoEditando.image" alt="preview" />
+          </div>
+        </div>
+        <!-- Imagens Adicionais -->
+        <div class="form-group full">
+          <label>Imagens Adicionais (Galeria)</label>
+          <div class="upload-area">
+            <input type="file" accept="image/*" #inputAdicional
+                  (change)="uploadImagem($event, 'adicional')" style="display:none" />
+            <button type="button" class="btn-upload secondary" (click)="inputAdicional.click()"
+                    [disabled]="uploadingImagem">
+              <span class="material-icons">add_photo_alternate</span>
+              Adicionar Imagem
+            </button>
+          </div>
+          <div class="images-adicional-grid" *ngIf="imagensAdicionais.length > 0">
+            <div *ngFor="let url of imagensAdicionais; let i = index" class="adicional-thumb">
+              <img [src]="url" alt="imagem {{i+1}}" />
+              <button class="remove-img" (click)="removerImagemAdicional(i)">
+                <span class="material-icons">close</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

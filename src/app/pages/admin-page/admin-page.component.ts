@@ -13,6 +13,7 @@ interface Product {
   originalPrice?: number;
   category: string;
   image: string;
+  images?: string;
   discount?: number;
   rating?: number;
   stock?: number;
@@ -49,6 +50,9 @@ export class AdminPageComponent implements OnInit {
   activeTab: 'dashboard' | 'products' | 'orders' = 'dashboard';
   sidebarCollapsed = false;
   adminName = '';
+  private supabaseUrl = 'https://btiyteqfytudpbswxgzd.supabase.co/storage/v1/object/public/products/';
+  private supabaseUploadUrl = 'https://btiyteqfytudpbswxgzd.supabase.co/storage/v1/object/products/';
+  private supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXl0ZXFmeXR1ZHBic3d4Z3pkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTg4NDksImV4cCI6MjA4ODM5NDg0OX0.lFknnGhJNkKcRg49iY2HcwKFV-iBO4Bs_P1wPWhTbHQ';
 
   // Dashboard
   stats: DashboardStats | null = null;
@@ -61,6 +65,8 @@ export class AdminPageComponent implements OnInit {
   produtoEditando: Partial<Product> = {};
   produtoParaDeletar: Product | null = null;
   salvando = false;
+  imagensAdicionais: string[] = [];
+  uploadingImagem = false;  
 
   // Pedidos
   pedidos: OrderSummary[] = [];
@@ -124,6 +130,10 @@ export class AdminPageComponent implements OnInit {
       name: '', description: '', price: 0, category: '',
       image: '', stock: 0, rating: 5, discount: 0
     };
+    // Carrega imagens adicionais existentes
+    this.imagensAdicionais = this.produtoEditando.images
+      ? this.produtoEditando.images.split(',').filter(u => u.trim())
+      : [];
     this.modalAberto = true;
   }
 
@@ -138,6 +148,7 @@ export class AdminPageComponent implements OnInit {
 
   salvarProduto() {
     this.salvando = true;
+    this.produtoEditando.images = this.imagensAdicionais.join(',');
     const isEdit = !!this.produtoEditando.id;
     const url = isEdit
       ? `${this.apiUrl}/admin/products/${this.produtoEditando.id}`
@@ -178,6 +189,43 @@ export class AdminPageComponent implements OnInit {
           this.carregarDashboard();
         }
       });
+  }
+  async uploadImagem(event: Event, tipo: 'principal' | 'adicional') {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    this.uploadingImagem = true;
+    const file = input.files[0];
+    const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+
+    try {
+      const res = await fetch(`${this.supabaseUploadUrl}${fileName}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.supabaseKey}`,
+          'apikey': this.supabaseKey,
+          'Content-Type': file.type,
+        },
+        body: file
+      });
+
+      if (res.ok) {
+        const url = `${this.supabaseUrl}${fileName}`;
+        if (tipo === 'principal') {
+          this.produtoEditando.image = url;
+        } else {
+          this.imagensAdicionais.push(url);
+        }
+      }
+    } catch (e) {
+      console.error('Erro no upload:', e);
+    } finally {
+      this.uploadingImagem = false;
+      input.value = '';
+    }
+  }
+  removerImagemAdicional(index: number) {
+    this.imagensAdicionais.splice(index, 1);
   }
 
   // ===== PEDIDOS =====

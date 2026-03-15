@@ -18,9 +18,26 @@
   <div class="detail-main">
 
     <!-- Imagem -->
-    <div class="detail-image">
-      <span class="badge-discount" *ngIf="produto.discount">-{{ produto.discount }}%</span>
-      <img [src]="produto.image" [alt]="produto.name" />
+    <div class="detail-image-wrapper">
+      <div class="detail-image">
+        <span class="badge-discount" *ngIf="produto.discount">-{{ produto.discount }}%</span>
+        <img [src]="todasImagens[imagemAtiva]" [alt]="produto.name" class="main-img" />
+        <button class="carousel-btn prev" *ngIf="todasImagens.length > 1"
+                (click)="imagemAtiva = (imagemAtiva - 1 + todasImagens.length) % todasImagens.length">
+          <span class="material-icons">chevron_left</span>
+        </button>
+        <button class="carousel-btn next" *ngIf="todasImagens.length > 1"
+                (click)="imagemAtiva = (imagemAtiva + 1) % todasImagens.length">
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+      <div class="thumbnails" *ngIf="todasImagens.length > 1">
+        <div *ngFor="let img of todasImagens; let i = index"
+            class="thumb" [class.active]="i === imagemAtiva"
+            (click)="imagemAtiva = i">
+          <img [src]="img" alt="thumb {{i+1}}" />
+        </div>
+      </div>
     </div>
 
     <!-- Info -->

@@ -17,6 +17,8 @@ export class ProductPageDetailComponent implements OnInit {
   produtosRelacionados: Product[] = [];
   quantidade = 1;
   carregando = true;
+  imagemAtiva = 0;
+  todasImagens: string[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -34,16 +36,18 @@ export class ProductPageDetailComponent implements OnInit {
   }
 
   carregarProduto(id: number) {
-    this.carregando = true;
     this.productService.getById(id).subscribe({
       next: (produto) => {
         this.produto = produto;
+        // Monta array com imagem principal + adicionais
+        this.todasImagens = [produto.image];
+        if (produto.images) {
+          const extras = produto.images.split(',').filter(u => u.trim());
+          this.todasImagens.push(...extras);
+        }
+        this.imagemAtiva = 0;
         this.carregando = false;
         this.carregarRelacionados(produto.category, id);
-      },
-      error: () => {
-        this.carregando = false;
-        this.router.navigate(['/']);
       }
     });
   }
