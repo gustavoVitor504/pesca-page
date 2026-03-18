@@ -1,0 +1,42 @@
+<div class="orders-container">
+  <h1>Meus Pedidos</h1>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="carregando">
+    <span class="material-icons spin">autorenew</span>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!carregando && pedidos.length === 0">
+    <span class="material-icons">receipt_long</span>
+    <p>Você ainda não fez nenhum pedido.</p>
+    <button (click)="router.navigate(['/'])">Ver Produtos</button>
+  </div>
+
+  <!-- Lista de pedidos -->
+  <div class="pedidos-list" *ngIf="!carregando && pedidos.length > 0">
+    <div *ngFor="let pedido of pedidos" class="pedido-card">
+
+      <div class="pedido-header">
+        <span class="pedido-id">#{{ pedido.id }}</span>
+        <span class="pedido-data">{{ pedido.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        <span class="status-badge" [class]="'status-' + pedido.status.toLowerCase()">
+          {{ getStatusLabel(pedido.status) }}
+        </span>
+      </div>
+
+      <div class="pedido-items">
+        <div *ngFor="let item of pedido.items" class="item-row">
+          <span class="item-name">{{ item.productName }}</span>
+          <span class="item-qty">x{{ item.quantity }}</span>
+          <span class="item-price">{{ item.unitPrice | currency:'BRL' }}</span>
+        </div>
+      </div>
+
+      <div class="pedido-footer">
+        <span class="pedido-total">Total: <strong>{{ pedido.total | currency:'BRL' }}</strong></span>
+      </div>
+
+    </div>
+  </div>
+</div>

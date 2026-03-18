@@ -6,6 +6,7 @@ import { CheckoutPageComponent } from './pages/checkout-page/checkout-page.compo
 import { AdminGuard } from './guards/admin.guard';
 import { VerifyEmailPageComponent } from './pages/verify-email-page/verify-email-page.component';
 import { ProductPageDetailComponent } from './pages/product-page-detail/product-page-detail.component';
+import { OrdersHistoryComponent } from './pages/orders-history/orders-history.component';
 
 export const routes: Routes = [
   {
@@ -34,5 +35,10 @@ export const routes: Routes = [
   { 
     path: 'produto/:id', 
     component: ProductPageDetailComponent 
+  },
+  { 
+    path: 'orders-history', 
+    component: OrdersHistoryComponent, 
+    canActivate: [AuthGuard] 
   }
 ];
