@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
   apiUrl: 'https://pesca-backend-3o69.onrender.com/api',
-  mpPublicKey: 'APP_USR-924dc433-e2bb-4dd7-a119-79cfee7a8bce'
+  mpPublicKey: 'TEST-18ed3ed3-6c68-4c83-9d18-a4259e3b659b'
 };
